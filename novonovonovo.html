@@ -1,1 +1,145 @@
 
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Qual é a Música?</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f2f2f2;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      height: 100px;
+      text-align: center;
+      line-height: 100px;
+      font-size: 18px;
+    }
+
+    #player-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #eee;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    #player-info .player-photo {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
+
+    #player-stats {
+      flex-grow: 1;
+      padding-left: 20px;
+    }
+
+    main#game-area {
+      padding: 20px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background-color: #2196F3;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background-color: #1976D2;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPO FIXO COM PROPAGANDA -->
+  <header id="ad-banner">
+    [ Espaço para Propaganda 1000x100px ]
+  </header>
+
+  <!-- INFORMAÇÕES DO JOGADOR -->
+  <section id="player-info">
+    <img src="https://via.placeholder.com/50" alt="Foto do Jogador" class="player-photo" id="player-photo">
+    <div id="player-stats">
+      <strong id="player-name">Jogador: ---</strong><br>
+      Pontuação: <span id="player-score">0</span> |
+      Acertos: <span id="player-hits">0</span> |
+      Erros: <span id="player-misses">0</span> |
+      Fase: <span id="player-level">0</span>
+    </div>
+  </section>
+
+  <!-- ÁREA PRINCIPAL DO JOGO -->
+  <main id="game-area">
+    <!-- Conteúdo inicial -->
+    <h2>Bem-vindo ao jogo "Qual é a Música?"</h2>
+    <p>Digite seu nome para começar:</p>
+    <input type="text" id="input-name" placeholder="Seu nome">
+    <button class="btn" onclick="startGame()">Iniciar</button>
+  </main>
+
+  <!-- LÓGICA EM JAVASCRIPT -->
+  <script>
+    function startGame() {
+      const name = document.getElementById('input-name').value.trim();
+      if (name === '') {
+        alert('Digite seu nome para jogar.');
+        return;
+      }
+
+      // Atualiza cabeçalho do jogador
+      document.getElementById('player-name').textContent = `Jogador: ${name}`;
+      document.getElementById('player-score').textContent = 0;
+      document.getElementById('player-hits').textContent = 0;
+      document.getElementById('player-misses').textContent = 0;
+      document.getElementById('player-level').textContent = 1;
+
+      // Troca conteúdo da área principal
+      document.getElementById('game-area').innerHTML = `
+        <h2>Fase 1 - Qual é a Música?</h2>
+        <audio controls>
+          <source src="trecho1.mp3" type="audio/mpeg">
+          Seu navegador não suporta áudio.
+        </audio>
+        <p>Escolha a música correta:</p>
+        <button class="btn" onclick="selectAnswer(true)">A) Dancing Queen - ABBA</button><br>
+        <button class="btn" onclick="selectAnswer(false)">B) Staying Alive - Bee Gees</button><br>
+        <button class="btn" onclick="selectAnswer(false)">C) I Will Survive - Gloria Gaynor</button>
+      `;
+    }
+
+    function selectAnswer(correct) {
+      if (correct) {
+        alert("🎉 Acertou!");
+        document.getElementById('player-score').textContent++;
+        document.getElementById('player-hits').textContent++;
+      } else {
+        alert("❌ Errou!");
+        document.getElementById('player-misses').textContent++;
+      }
+
+      // Avançar de fase (exemplo)
+      let currentLevel = parseInt(document.getElementById('player-level').textContent);
+      document.getElementById('player-level').textContent = currentLevel + 1;
+
+      // Aqui você carregaria a próxima pergunta com nova chamada HTML dinâmica
+      document.getElementById('game-area').innerHTML = `
+        <h2>Fase ${currentLevel + 1} - Em breve...</h2>
+        <p>Próxima pergunta será carregada aqui.</p>
+        <button class="btn" onclick="startGame()">Reiniciar</button>
+      `;
+    }
+  </script>
+
+</body>
+</html>
